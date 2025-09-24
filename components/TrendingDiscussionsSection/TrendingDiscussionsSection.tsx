@@ -87,22 +87,13 @@ const TrendingDiscussionsSection: React.FC<TrendingDiscussionsSectionProps> = ({
           }
           const all = allRes.data || [];
 
-          const keyOf = (i: any) =>
-            ((i?.slug as string) || (i?.name as string) || "")
-              .toString()
-              .trim()
-              .toLowerCase()
-              .replace(/\s+/g, "-");
-
           const disDynamic = (all as any[]).find(
             (i) =>
-              keyOf(i) === "trending-discussions" &&
+              (i.name || "").toLowerCase() === "trending discussions" &&
               (i.mode || "").toLowerCase() === "dynamic"
           );
           const disSelected = (all as any[]).find(
-            (i) =>
-              keyOf(i) === "trending-discussions" &&
-              (i.mode || "").toLowerCase() === "select_discussion"
+            (i) => (i.mode || "").toLowerCase() === "select_discussion"
           );
           const chosen = (disDynamic as any) || (disSelected as any);
           setSliderDescription((chosen?.description as string) || "");
