@@ -120,15 +120,24 @@ const TrendingCoursesSection: React.FC<TrendingCoursesSectionProps> = ({
         }
         const all = sliderRes.data || [];
 
+        const keyOf = (i: any) =>
+          ((i?.slug as string) || (i?.name as string) || "")
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
         // Prefer Dynamic mode for courses if available
         const coursesDynamic = (all as any[]).find(
           (i) =>
-            (i.name || "").toLowerCase() === "trending courses" &&
+            keyOf(i) === "trending-courses" &&
             (i.mode || "").toLowerCase() === "dynamic"
         );
 
         const coursesSelected = (all as any[]).find(
-          (i) => (i.mode || "").toLowerCase() === "select_course"
+          (i) =>
+            keyOf(i) === "trending-courses" &&
+            (i.mode || "").toLowerCase() === "select_course"
         );
 
         const chosen = (coursesDynamic as any) || (coursesSelected as any);

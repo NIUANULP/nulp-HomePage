@@ -127,13 +127,22 @@ const TrendingGoodPracticesSection: React.FC<
         }
         const all = allRes.data || [];
 
+        const keyOf = (i: any) =>
+          ((i?.slug as string) || (i?.name as string) || "")
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
         const gpDynamic = (all as any[]).find(
           (i) =>
-            (i.name || "").toLowerCase() === "trending good practices" &&
+            keyOf(i) === "trending-good-practices" &&
             (i.mode || "").toLowerCase() === "dynamic"
         );
         const gpSelected = (all as any[]).find(
-          (i) => (i.mode || "").toLowerCase() === "select_good_practices"
+          (i) =>
+            keyOf(i) === "trending-good-practices" &&
+            (i.mode || "").toLowerCase() === "select_good_practices"
         );
         const chosen = (gpDynamic as any) || (gpSelected as any);
         setSliderDescription((chosen?.description as string) || "");
