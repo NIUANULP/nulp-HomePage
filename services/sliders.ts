@@ -94,9 +94,6 @@ const isWithinPublishWindow = (
   return startOk && endOk;
 };
 
-const toKey = (value?: string | null): string =>
-  (value || "").toString().trim().toLowerCase().replace(/\s+/g, "-");
-
 // Map CMS sort field/order to NULP API sort_by payload
 const normalizeSort = (
   sortField?: string | null,
@@ -169,16 +166,10 @@ export const slidersApi = {
         status: res.status,
       };
     const items = res.data as HomepageSliderItem[];
+    // Prefer mode Select_Course; fallback to name match
     const slider =
-      items.find(
-        (i) =>
-          toKey((i as any).slug || i.name) === "trending-courses" &&
-          (i.mode || "").toLowerCase() === "select_course"
-      ) ||
-      items.find(
-        (i) =>
-          Array.isArray(i.trending_courses) && i.trending_courses.length > 0
-      );
+      items.find((i) => (i.mode || "").toLowerCase() === "select_course") ||
+      items.find((i) => (i.name || "").toLowerCase() === "trending courses");
     const ids = (slider?.trending_courses || []).filter(Boolean) as string[];
     return { success: true, data: ids, status: res.status };
   },
@@ -394,9 +385,10 @@ export const slidersApi = {
     const items = res.data as HomepageSliderItem[];
     const slider =
       items.find(
-        (i) =>
-          toKey((i as any).slug || i.name) === "trending-good-practices" &&
-          (i.mode || "").toLowerCase() === "select_good_practices"
+        (i) => (i.mode || "").toLowerCase() === "select_good_practices"
+      ) ||
+      items.find(
+        (i) => (i.name || "").toLowerCase() === "trending good practices"
       ) ||
       items.find(
         (i) =>
@@ -421,10 +413,9 @@ export const slidersApi = {
     }
     const items = res.data as HomepageSliderItem[];
     const slider =
+      items.find((i) => (i.mode || "").toLowerCase() === "select_discussion") ||
       items.find(
-        (i) =>
-          toKey((i as any).slug || i.name) === "trending-discussions" &&
-          (i.mode || "").toLowerCase() === "select_discussion"
+        (i) => (i.name || "").toLowerCase() === "trending discussions"
       ) ||
       items.find(
         (i) =>
