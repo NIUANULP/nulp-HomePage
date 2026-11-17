@@ -9,6 +9,13 @@ const nextConfig = {
   ...(process.env.NODE_ENV === "production" && { output: "export" }),
   async headers() {
     return [
+      // Dev / `next start` only (ignored by the static export): let the Learnathon
+      // media service worker also control "/learnathon" (no trailing slash), which is
+      // how the dev server serves the page. Production redirects to "/learnathon/".
+      {
+        source: "/learnathon/winners-media-sw.js",
+        headers: [{ key: "Service-Worker-Allowed", value: "/learnathon" }],
+      },
       // Long-cache static Learnathon assets
       {
         source: "/learnathon/:path*.css",
