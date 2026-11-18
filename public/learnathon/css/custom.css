@@ -2323,7 +2323,7 @@ section img {
 .underline-white {
     border-bottom: 1px solid #FFFFFF;
     width: 55%;
-    right: 194px;
+    right: 42px; /* align with the header's right padding (the Vote Now button that sat here was removed) */
     bottom: 32px;
     position: absolute;
 }
